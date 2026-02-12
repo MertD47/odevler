@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Üye Giriş Formu</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f4f9; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 320px; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-group { margin-top: 15px; display: flex; gap: 10px; }
+        button { flex: 1; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-login { background-color: #4CAF50; color: white; }
+        .btn-clear { background-color: #f44336; color: white; }
+        .error-box { background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-top: 15px; border: 1px solid #ef9a9a; font-size: 14px; }
+        .success-msg { color: #2e7d32; text-align: center; font-size: 24px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function UyeGirisi() {
+            const [eposta, setEposta] = React.useState('');
+            const [parola, setParola] = React.useState('');
+            const [hata, setHata] = React.useState('');
+            const [basarili, setBasarili] = React.useState(false);
+
+            const handleGiris = () => {
+                if (eposta.trim() === "" || parola.trim() === "") {
+                    setHata("Hata: E-posta veya Parola alanı boş bırakılamaz!");
+                    return;
+                }
+
+                if (eposta === "ornek@xyz.com" && parola === "12345") {
+                    setBasarili(true);
+                    setHata("");
+                } else {
+                    setHata("Hata: Girilen bilgiler hatalıdır.");
+                }
+            };
+
+            const handleTemizle = () => {
+                setEposta('');
+                setParola('');
+                setHata('');
+            };
+
+            if (basarili) {
+                return (
+                    <div className="card">
+                        <div className="success-msg">Giriş Başarılı</div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="card">
+                    <h2 style={{marginTop: 0}}>Üye Giriş Formu</h2>
+                    
+                    <label>E-Posta:</label>
+                    <input 
+                        type="text" 
+                        value={eposta} 
+                        placeholder="E-postanızı girin..."
+                        onChange={(e) => setEposta(e.target.value)} 
+                    />
+
+                    <label>Parola:</label>
+                    <input 
+                        type="password" 
+                        value={parola} 
+                        placeholder="Parolanızı girin..."
+                        onChange={(e) => setParola(e.target.value)} 
+                    />
+
+                    <div className="btn-group">
+                        <button className="btn-login" onClick={handleGiris}>Giriş Yap</button>
+                        <button className="btn-clear" onClick={handleTemizle}>Temizle</button>
+                    </div>
+
+                    {hata && (
+                        <div className="error-box">
+                            {hata}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<UyeGirisi />);
+    </script>
+</body>
+</html>
